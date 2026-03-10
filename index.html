@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Convite Bridgerton</title>
 
 <style>
@@ -25,24 +25,12 @@ position:fixed;
 inset:0;
 width:100vw;
 height:100vh;
-overflow:hidden;
 background:#000;
 z-index:20;
 transition:opacity .6s ease;
 }
 
-#canvas1080{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:100vw;
-height:calc(100vw*1850/1080);
-}
-
 #capa img{
-position:absolute;
-inset:0;
 width:100%;
 height:100%;
 object-fit:cover;
@@ -51,41 +39,24 @@ object-fit:cover;
 #abrirConvite{
 position:absolute;
 inset:0;
-width:100%;
-height:100%;
 background:transparent;
 border:0;
 cursor:pointer;
-z-index:30;
 }
 
-/* CONTAINER */
+/* CONTEÚDO */
 
-#container-principal{
+#container{
 position:fixed;
 inset:0;
 width:100vw;
 height:100vh;
-overflow:hidden;
-background:#000;
 opacity:0;
-transition:opacity 1s ease;
-}
-
-/* VIDEO */
-
-#canvas-video{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:100vw;
-height:calc(100vw*1850/1080);
+transition:opacity 1s;
 }
 
 #video{
 position:absolute;
-inset:0;
 width:100%;
 height:100%;
 object-fit:cover;
@@ -94,21 +65,12 @@ pointer-events:none;
 
 /* BOTÕES */
 
-#botoes{
-position:absolute;
-inset:0;
-z-index:10;
-}
-
 .btn{
 position:absolute;
-display:block;
 background:transparent;
-cursor:pointer;
 border:none;
+cursor:pointer;
 }
-
-/* BOTÕES */
 
 .btn-local{left:18%;top:69%;width:17%;height:10%;}
 .btn-confirmar{left:41%;top:69%;width:17%;height:10%;}
@@ -136,8 +98,8 @@ max-height:90%;
 position:absolute;
 top:20px;
 right:20px;
-color:#fff;
 font-size:30px;
+color:#fff;
 background:none;
 border:none;
 cursor:pointer;
@@ -166,62 +128,54 @@ animation:brilho 4s infinite;
 
 <body>
 
+<!-- CAPA -->
+
 <div id="capa">
-
-<div id="canvas1080">
-<img src="./assets/media/capa.png" alt="Capa do convite">
-</div>
-
+<img src="capa.png" alt="Capa do convite">
 <button id="abrirConvite"></button>
-
 </div>
 
-<div id="container-principal">
+<!-- CONTEÚDO -->
 
-<div id="canvas-video">
+<div id="container">
 
-<video id="video" autoplay muted playsinline loop preload="auto">
-<source src="./assets/media/video.mp4" type="video/mp4">
+<video id="video" autoplay muted playsinline loop>
+<source src="video.mp4" type="video/mp4">
 </video>
-
-<div id="botoes">
 
 <a href="https://maps.app.goo.gl/zSL51nyuTbtPviSh9" target="_blank" class="btn btn-local"></a>
 
 <a href="https://wa.me/559799034158?text=É%20com%20muita%20alegria%20que%20confirmo%20minha%20presença%20no%20seu%20casamento!" target="_blank" class="btn btn-confirmar"></a>
 
-<button class="btn btn-presente" id="btn-presente"></button>
+<button class="btn btn-presente" id="btnPresente"></button>
 
 </div>
 
-</div>
+<!-- PRESENTES -->
 
-</div>
+<div id="overlay" class="overlay">
 
-<div id="overlay-presente" class="overlay">
+<button class="fechar" id="fechar">&times;</button>
 
-<button class="fechar" id="fechar-overlay">&times;</button>
-
-<img src="./assets/media/presente.png" alt="Lista de presentes">
+<img src="presente.png" alt="Lista de presentes">
 
 </div>
 
 <script>
 
-document.addEventListener("DOMContentLoaded",()=>{
-
-const capa=document.getElementById("capa")
 const abrir=document.getElementById("abrirConvite")
+const capa=document.getElementById("capa")
+const container=document.getElementById("container")
 const video=document.getElementById("video")
-const overlay=document.getElementById("overlay-presente")
-const btnPresente=document.getElementById("btn-presente")
-const btnFechar=document.getElementById("fechar-overlay")
-const container=document.getElementById("container-principal")
 
-const musica=new Audio("./assets/media/brid.mp3")
+const overlay=document.getElementById("overlay")
+const btnPresente=document.getElementById("btnPresente")
+const fechar=document.getElementById("fechar")
+
+const musica=new Audio("brid.mp3")
 musica.volume=0.7
 
-abrir.addEventListener("click",()=>{
+abrir.onclick=()=>{
 
 capa.style.opacity="0"
 
@@ -236,25 +190,25 @@ video.play()
 
 musica.play().catch(()=>{})
 
-iniciarParticulas()
+particulas()
 
-})
+}
 
-btnPresente.addEventListener("click",()=>{
+btnPresente.onclick=()=>{
 overlay.style.display="flex"
-})
+}
 
-btnFechar.addEventListener("click",()=>{
+fechar.onclick=()=>{
 overlay.style.display="none"
-})
+}
 
-overlay.addEventListener("click",(e)=>{
-if(e.target===overlay)overlay.style.display="none"
-})
+overlay.onclick=(e)=>{
+if(e.target===overlay){
+overlay.style.display="none"
+}
+}
 
-})
-
-function iniciarParticulas(){
+function particulas(){
 
 for(let i=0;i<30;i++){
 
